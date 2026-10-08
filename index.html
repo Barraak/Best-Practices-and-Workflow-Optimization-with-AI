@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reusable Pricing Cards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            padding: 40px 20px;
+        }
+
+        .pricing-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .pricing {
+            width: 280px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 0;
+            color: #1a1a1a;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2e7d32;
+            margin: 10px 0 20px;
+        }
+
+        .features {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .btn {
+            background-color: #0056b3;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #003d82;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pricing-container" id="pricing-wrapper"></div>
+
+    <script>
+        // Reusable Card Component Function
+        function createPricingCard(title, price, features, onSelect) {
+            const card = document.createElement('div');
+            card.className = 'pricing';
+
+            const featureItems = features.map(item => `<li>${item}</li>`).join('');
+
+            card.innerHTML = `
+                <div>
+                    <h2 class="title">${title}</h2>
+                    <p class="price">${price}</p>
+                    <ul class="features">
+                        ${featureItems}
+                    </ul>
+                </div>
+                <button class="btn">Start Trial</button>
+            `;
+
+            const button = card.querySelector('.btn');
+            button.addEventListener('click', () => {
+                if (onSelect) onSelect(title);
+            });
+
+            return card;
+        }
+
+        // Instantiating reusable cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('pricing-wrapper');
+
+            const plans = [
+                {
+                    title: 'Basic Plan',
+                    price: '$9.99 /month',
+                    features: ['1 GB Storage', 'Basic Support', 'All Core Features']
+                },
+                {
+                    title: 'Pro Plan',
+                    price: '$29.99 /month',
+                    features: ['10 GB Storage', 'Priority Support', 'Advanced Analytics']
+                },
+                {
+                    title: 'Enterprise Plan',
+                    price: '$99.99 /month',
+                    features: ['Unlimited Storage', '24/7 Dedicated Support', 'Custom Integration']
+                }
+            ];
+
+            plans.forEach(plan => {
+                const cardElement = createPricingCard(
+                    plan.title,
+                    plan.price,
+                    plan.features,
+                    (planName) => alert(`Selected plan: ${planName}`)
+                );
+                container.appendChild(cardElement);
+            });
+        });
+    </script>
+</body>
+</html>
